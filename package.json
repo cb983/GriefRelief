@@ -6,7 +6,9 @@
     "@cap-js/hana": "^2",
     "@sap/cds": "^9",
     "@sap/xssec": "^4",
-    "express": "^4"
+    "express": "^4",
+    "@sap-cloud-sdk/resilience": "*",
+    "@sap-cloud-sdk/http-client": "^4.1.2"
   },
   "devDependencies": {
     "@cap-js/cds-typer": ">=0.1",
@@ -16,18 +18,21 @@
     "@types/node": "^22.0.0",
     "cds-plugin-ui5": "^0.13.0",
     "tsx": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "rimraf": "^5.0.5",
+    "mbt": "^1.2.29"
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-grief-relief-agent": "cds watch --open griefreliefagent/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-griefrelief": "cds watch --open griefrelief/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy GriefRelief --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-griefreliefcounselor": "cds watch --open griefreliefcounselor/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
     "app/*"
-  ],
-  "sapux": [
-    "app/grief-relief-agent"
   ],
   "imports": {
     "#cds-models/*": "./@cds-models/*/index.js"
@@ -39,7 +44,28 @@
       },
       "destinations": true,
       "html5-repo": true,
-      "workzone": true
+      "workzone": true,
+      "AI_CORE": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "AI_CORE",
+          "requestTimeout": "300000"
+        },
+        "DEPLOYMENT_ID": "dc29d51f3a94d40a",
+        "RESOURCE_GROUP_ID": "default",
+        "API_VERSION": "2024-12-01-preview"
+      },
+      "DOCUMENT_AI": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "DOCUMENT_AI",
+          "requestTimeout": "300000"
+        },
+        "CLIENT": "default"
+      }
     }
-  }
+  },
+  "sapux": [
+    "app/griefrelief"
+  ]
 }

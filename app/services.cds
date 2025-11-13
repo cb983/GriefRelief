@@ -1,2 +1,4 @@
 
-using from './grief-relief-agent/annotations';
+using from './griefrelief/annotations';
+
+using from './griefreliefcounselor/annotations';
