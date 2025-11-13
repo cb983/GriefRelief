@@ -3,12 +3,20 @@
   "version": "1.0.0",
   "description": "A simple CAP project.",
   "dependencies": {
+    "@cap-js/hana": "^2",
     "@sap/cds": "^9",
+    "@sap/xssec": "^4",
     "express": "^4"
   },
   "devDependencies": {
+    "@cap-js/cds-typer": ">=0.1",
+    "@cap-js/cds-types": "^0.15.0",
     "@cap-js/sqlite": "^2",
-    "cds-plugin-ui5": "^0.13.0"
+    "@sap/cds-dk": "^9",
+    "@types/node": "^22.0.0",
+    "cds-plugin-ui5": "^0.13.0",
+    "tsx": "^4",
+    "typescript": "^5"
   },
   "scripts": {
     "start": "cds-serve",
@@ -20,5 +28,18 @@
   ],
   "sapux": [
     "app/grief-relief-agent"
-  ]
+  ],
+  "imports": {
+    "#cds-models/*": "./@cds-models/*/index.js"
+  },
+  "cds": {
+    "requires": {
+      "[production]": {
+        "auth": "xsuaa"
+      },
+      "destinations": true,
+      "html5-repo": true,
+      "workzone": true
+    }
+  }
 }
