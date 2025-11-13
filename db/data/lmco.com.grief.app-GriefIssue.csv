@@ -1,0 +1,11 @@
+ID,purchaseOrderNumber,partNumber,issueDescription,dateReported,status,priority,assignedTo,resolution,resolutionDate
+90565272-535c-492f-84d7-a59f0409f4b7,eOrderNumber-9056527,partNumber-9056527,issueDescription-9056527,2001-11-11,status-9056527,ty-9056527,assignedTo-9056527,resolution-9056527,2009-10-08
+90565289-f653-498c-a340-4660d863d672,eOrderNumber-9056528,partNumber-9056528,issueDescription-9056528,2019-03-14,status-9056528,ty-9056528,assignedTo-9056528,resolution-9056528,2023-09-08
+9056529b-6300-4894-bdb3-b11e3b8bbd73,eOrderNumber-9056529,partNumber-9056529,issueDescription-9056529,2003-06-02,status-9056529,ty-9056529,assignedTo-9056529,resolution-9056529,2005-07-05
+9056530c-3864-4b41-9b07-aa21ec7bbdba,eOrderNumber-9056530,partNumber-9056530,issueDescription-9056530,2011-12-02,status-9056530,ty-9056530,assignedTo-9056530,resolution-9056530,2021-03-13
+9056531d-7dfd-4739-ae26-3d2d42fa37f2,eOrderNumber-9056531,partNumber-9056531,issueDescription-9056531,2014-04-04,status-9056531,ty-9056531,assignedTo-9056531,resolution-9056531,2006-04-26
+9056532c-fb20-4180-be1d-6955164b098d,eOrderNumber-9056532,partNumber-9056532,issueDescription-9056532,2015-06-03,status-9056532,ty-9056532,assignedTo-9056532,resolution-9056532,2022-07-17
+9056533c-6f59-4890-ae47-fd6c8bdd9be7,eOrderNumber-9056533,partNumber-9056533,issueDescription-9056533,2019-06-25,status-9056533,ty-9056533,assignedTo-9056533,resolution-9056533,2004-09-14
+90565346-45c2-4345-be4a-038584e491e7,eOrderNumber-9056534,partNumber-9056534,issueDescription-9056534,2010-02-13,status-9056534,ty-9056534,assignedTo-9056534,resolution-9056534,2023-04-08
+9056535c-6aa9-4e40-8e45-1b0a993c3ec4,eOrderNumber-9056535,partNumber-9056535,issueDescription-9056535,2009-07-11,status-9056535,ty-9056535,assignedTo-9056535,resolution-9056535,2005-04-26
+9056536d-4f80-4ac4-a663-7dd3c6dcc35a,eOrderNumber-9056536,partNumber-9056536,issueDescription-9056536,2023-12-14,status-9056536,ty-9056536,assignedTo-9056536,resolution-9056536,2004-12-15
