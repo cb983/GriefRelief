@@ -1,153 +1,179 @@
 _schema-version: 3.3.0
 ID: GriefRelief
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
-parameters:
-  enable-parallel-deployments: true
-  deploy_mode: html5-repo
-build-parameters:
-  before-all:
-    - builder: custom
-      commands:
-        - npm ci
-        - npx cds build --production
 modules:
-  - name: GriefRelief-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      instances: 1
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: GriefRelief-auth
-      - name: GriefRelief-db
-      - name: GriefRelief-destination
-
-  - name: GriefRelief-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: GriefRelief-db
-
-  - name: GriefRelief-app-deployer
-    type: com.sap.application.content
-    path: gen
-    requires:
-      - name: GriefRelief-auth
-      - name: srv-api
-      - name: GriefRelief-html5-repo-host
-        parameters:
-          content-target: true
-          config:
-            HTML5Runtime_enabled: true
-    build-parameters:
-      build-result: app/
-      requires:
-        - name: GriefReliefgriefreliefagent
-          artifacts:
-            - grief-relief-agent.zip
-          target-path: app/
-
-  - name: GriefReliefgriefreliefagent
-    type: html5
-    path: app/grief-relief-agent
-    build-parameters:
-      build-result: dist
-      builder: custom
-      commands:
-        - npm ci
-        - npm run build
-      supported-platforms:
-        []
-
-  - name: GriefRelief-destinations
-    type: com.sap.application.content
-    requires:
-      - name: GriefRelief-auth
-        parameters:
-          service-key:
-            name: GriefRelief-auth-key
-      - name: GriefRelief-html5-repo-host
-        parameters:
-          service-key:
-            name: GriefRelief-html5-repo-host-key
-      - name: srv-api
-      - name: GriefRelief-destination
-        parameters:
-          content-target: true
-    build-parameters:
-      no-source: true
-    parameters:
-      content:
-        instance:
-          existing_destinations_policy: update
-          destinations:
-            - Name: GriefRelief-html5-repository
-              ServiceInstanceName: GriefRelief-html5-repo-host
-              ServiceKeyName: GriefRelief-html5-repo-host-key
-              sap.cloud.service: GriefRelief.service
-            - Name: GriefRelief-auth
-              Authentication: OAuth2UserTokenExchange
-              ServiceInstanceName: GriefRelief-auth
-              ServiceKeyName: GriefRelief-auth-key
-              sap.cloud.service: GriefRelief.service
-
-resources:
+- name: GriefRelief-srv
+  type: nodejs
+  path: gen/srv
+  requires:
   - name: GriefRelief-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: GriefRelief-${org}-${space}
-        tenant-mode: dedicated
   - name: GriefRelief-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
   - name: GriefRelief-destination
-    type: org.cloudfoundry.managed-service
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: GriefRelief-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: GriefRelief-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: GriefRelief-app-deployer
+  type: com.sap.application.content
+  path: gen
+  requires:
+  - name: GriefRelief-auth
+  - name: srv-api
+  - name: GriefRelief-html5-repo-host
     parameters:
-      service: destination
-      service-plan: lite
       config:
         HTML5Runtime_enabled: true
-        init_data:
-          instance:
-            existing_destinations_policy: update
-            destinations:
-              - Name: srv-api
-                URL: ~{srv-api/srv-url}
-                Authentication: NoAuthentication
-                Type: HTTP
-                ProxyType: Internet
-                HTML5.ForwardAuthToken: true
-                HTML5.DynamicDestination: true
+      content-target: true
+  build-parameters:
+    build-result: app/
     requires:
-      - name: srv-api
-        group: destinations
-        properties:
-          name: srv-api # must be used in xs-app.json as well
-          url: ~{srv-url}
-          forwardAuthToken: true
-
+    - artifacts:
+      - grief-relief-agent.zip
+      name: GriefReliefgriefreliefagent
+      target-path: app/
+    - artifacts:
+      - griefrelief.zip
+      name: griefrelief
+      target-path: app/
+    - artifacts:
+      - griefreliefcounselor.zip
+      name: griefreliefcounselor
+      target-path: app/
+- name: GriefReliefgriefreliefagent
+  type: html5
+  path: app/grief-relief-agent
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm ci
+    - npm run build
+    supported-platforms: []
+- name: GriefRelief-destinations
+  type: com.sap.application.content
+  requires:
+  - name: GriefRelief-auth
+    parameters:
+      service-key:
+        name: GriefRelief-auth-key
   - name: GriefRelief-html5-repo-host
-    type: org.cloudfoundry.managed-service
     parameters:
-      service: html5-apps-repo
-      service-plan: app-host
-  - name: GriefRelief-html5-runtime
-    type: org.cloudfoundry.managed-service
+      service-key:
+        name: GriefRelief-html5-repo-host-key
+  - name: srv-api
+  - name: GriefRelief-destination
     parameters:
-      service: html5-apps-repo
-      service-plan: app-runtime
+      content-target: true
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: GriefRelief-html5-repository
+          ServiceInstanceName: GriefRelief-html5-repo-host
+          ServiceKeyName: GriefRelief-html5-repo-host-key
+          sap.cloud.service: GriefRelief.service
+        - Authentication: OAuth2UserTokenExchange
+          Name: GriefRelief-auth
+          ServiceInstanceName: GriefRelief-auth
+          ServiceKeyName: GriefRelief-auth-key
+          sap.cloud.service: GriefRelief.service
+        existing_destinations_policy: update
+  build-parameters:
+    no-source: true
+- name: griefrelief
+  type: html5
+  path: app/griefrelief
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: griefreliefcounselor
+  type: html5
+  path: app/griefreliefcounselor
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: GriefRelief-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: GriefRelief-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: GriefRelief-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: GriefRelief-destination
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+    service: destination
+    service-plan: lite
+  requires:
+  - name: srv-api
+    group: destinations
+    properties:
+      forwardAuthToken: true
+      name: srv-api
+      url: ~{srv-url}
+- name: GriefRelief-html5-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+- name: GriefRelief-html5-runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production

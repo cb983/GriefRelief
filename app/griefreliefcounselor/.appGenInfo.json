@@ -1,0 +1,24 @@
+{
+  "generationParameters": {
+    "generationDate": "Thu Nov 13 2025 17:11:40 GMT+0000 (Coordinated Universal Time)",
+    "generatorPlatform": "SAP Business Application Studio",
+    "serviceType": "Local CAP",
+    "metadataFilename": "",
+    "serviceUrl": "http://localhost:4004/service/GriefReliefService/",
+    "appName": "griefreliefcounselor",
+    "appTitle": "GriefReliefCounselor",
+    "appDescription": "An SAP Fiori application.",
+    "appNamespace": "",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.142.0",
+    "enableCodeAssist": false,
+    "enableEslint": false,
+    "enableTypeScript": true,
+    "showMockDataInfo": false,
+    "generatorVersion": "1.19.5",
+    "template": "Basic V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [],
+    "launchText": "To launch the generated app, start your CAP project:  and navigate to the following location in your browser:\n\nhttp://localhost:4004/griefreliefcounselor/index.html"
+  }
+}

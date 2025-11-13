@@ -1,0 +1,77 @@
+<mvc:View controllerName="griefreliefcounselor.controller.GriefReliefCounselor"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:u="sap.ui.unified"
+    displayBlock="true">
+    <Page id="_IDGenPage" title="Grief Relief">
+        <content>
+            <l:VerticalLayout id="vertial" width="100%" class="sapUiContentPadding">
+                <Title id="Title" text="Grief Relief" level="H1" titleStyle="H1" class="sapUiMediumMarginBottom"/>
+                
+                <Panel id="panel">
+                    <l:HorizontalLayout id="horizontal">
+                        <u:FileUploader
+                            id="fileUploader"
+                            name="myFileUpload"
+                            uploadUrl="upload/"
+                            tooltip="Upload JPEG image"
+                            fileType="jpg,jpeg"
+                            style="Emphasized"
+                            width="auto"
+                            placeholder="Choose JPEG file"
+                            change="handleFileUpload"/>
+                        <Button
+                            id = "takePic"
+                            text="Take/Upload Photo"
+                            press="onTakePhoto"
+                            icon="sap-icon://camera"
+                            class="sapUiSmallMarginEnd"/>
+                        <Image
+                            id="imagePreview"
+                            src="{viewModel>/imagePreview}"
+                            width="5rem"
+                            height="5rem"
+                            visible="{= !!${viewModel>/imagePreview} }"
+                            class="sapUiTinyMarginTop"/>
+                    </l:HorizontalLayout>
+                    <!--layoutData>
+                        <l:VerticalLayoutData id = "vertData" styleClass="sapUiSmallMarginBottom"/>
+                    </layoutData-->
+                </Panel>
+                
+                <Panel id="panel1">
+                    <TextArea
+                        id="descriptionInput"
+                        rows="4"
+                        width="100%"
+                        growing="true"
+                        growingMaxLines="10"
+                        value="{viewModel>/description}"
+                        placeholder="Enter your text here..."
+                        change="onDescriptionChange"
+                        class="sapUiSmallMarginBottom"/>
+                    <!--layoutData>
+                        <l:VerticalLayoutData styleClass="sapUiSmallMarginBottom"/>
+                    </layoutData-->
+                </Panel>
+                
+                <Button
+                    id = "submit"
+                    text="Submit"
+                    press="onSubmit"
+                    type="Emphasized"
+                    width="100%"
+                    enabled="{viewModel>/submitEnabled}"
+                    class="sapUiSmallMarginBottom"/>
+            </l:VerticalLayout>
+        </content>
+        <footer>
+            <Toolbar id="toolbar">
+                <ToolbarSpacer id="space1"/>
+                <Text id="copywriteText" text="© 2023 Grief Relief"/>
+                <ToolbarSpacer id="space2"/>
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>
